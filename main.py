@@ -1,6 +1,8 @@
 from utils.openspace import Openspace
+import pandas as pd
 
-names = [
+
+"""names = [
     "Mario",
     "Luigi",
     "Peach",
@@ -27,8 +29,16 @@ names = [
     "Nancy",
     "edo",
     "tommy",
-]
+]"""
 
+
+file_presenze = "presenze.xlsx"
+# Read names from the Excel file
+df = pd.read_excel(file_presenze, sheet_name="Sheet1")
+names_column = df["Nome"].dropna()
+names = names_column.tolist()
+
+# Initialize Openspace and organize the names
 ufficio = Openspace()
 ufficio.organize(names)
 ufficio.display()
