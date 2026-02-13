@@ -1,4 +1,5 @@
 import random
+import matplotlib.pyplot as plt
 from utils.table import Table
 
 
@@ -69,3 +70,51 @@ class Openspace:
                 table_list.append(data)
         df = pd.DataFrame(table_list)
         df.to_excel("Today_s_positions.xlsx", index=False)
+
+    def visualization(self):
+        """
+        visualize the tables and their occupants using matplotlib
+        param: none
+        return: none
+        """
+
+        table_per_row = 3
+        row_per_table = 2
+        fig, ax = plt.subplots(figsize=(30, 8))
+        count = 0
+        tcount = 0
+        for table in self.tables:
+            count = count + 1
+            row = (count - 1) // table_per_row
+            line = (count) % table_per_row
+            x_base = line * 10
+            y_base = row * -10
+            tcount = 0
+            for seat in table.seats:
+                tcount = tcount + 1
+                trow = (tcount - 1) // row_per_table
+                tline = (tcount) % row_per_table
+                x_final = x_base + tline * 2
+                y_final = y_base - trow * 2
+                if seat.free:
+                    color = "green"
+                else:
+                    color = "red"
+                circle = plt.Circle((x_final + 0.7, y_final), 0.9, color=color)
+
+                ax.add_patch(circle)
+                name = seat.occupant
+                plt.text(x_final, y_final, name, va="center", fontsize=9)
+
+            plt.text(
+                x_base + 1.6,
+                y_base + 1,
+                "Tavolo {}".format(count),
+                ha="center",
+                fontweight="bold",
+            )
+
+        plt.axis("equal")
+        plt.axis("off")
+        plt.title("Openspace - Seating Arrangement", fontsize=16, fontweight="bold")
+        plt.show()
