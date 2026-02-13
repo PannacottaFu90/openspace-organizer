@@ -43,3 +43,29 @@ class Openspace:
                     len(self.left_over), self.left_over
                 )
             )
+
+    def export_excel(self):
+        """
+        export the tables and their occupants to an excel file
+        param: none
+        return: none
+        """
+        import pandas as pd
+
+        data = {}
+        table_list = []
+        count = 0
+        for table in self.tables:
+            count = count + 1
+            for seat in table.seats:
+                data = {
+                    "Table_name": "Table {}".format(count),
+                    "Occupant": seat.occupant,
+                }
+                table_list.append(data)
+        if len(self.left_over) > 0:
+            for name in self.left_over:
+                data = {"Table_name": "No seat", "Occupant": name}
+                table_list.append(data)
+        df = pd.DataFrame(table_list)
+        df.to_excel("Today_s_positions.xlsx", index=False)
