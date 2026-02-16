@@ -29,9 +29,9 @@ If the environment.yml file is updated with new libraries, sync your local envir
 
 ##U sage Workflow
 
-- **Input Data**: Place your presences.xlsx file in the project root folder. Ensure the file contains a column with the names of the attendees. The header should be *'Nome'*.
+- **Input Data**: You can use .csv or .xlsx format. No header. If excel file, please fill the firt column with the names.
 - **Execution**: Run the main script through your terminal:
-- **Output**: The system will parse the names, initialize the openspace layout, and print the final seating arrangement to the console.
+- **Output**: The system will print the final seating arrangement to the console, save an excel file in your project folder and provide you with a 2D visualization.
 
 ## Technical Highlights
 String Representation: Every class implements the __str__() method, providing clear, human-readable descriptions of objects during debugging or console output.
