@@ -9,21 +9,30 @@ class Openspace:
         self.tables: list[Table] = [Table(4) for i in range(0, self.number_of_tables)]
 
     def organize(self, names: list):
-        """
-        organize the names into tables
-        param: list of names
-        return: none
-        """
         self.left_over = []
         random.shuffle(names)
+        tot_seats = self.number_of_tables * self.tables[0].capacity
 
-        for name in names:
-            for table in self.tables:
-                if table.has_free_spot():
-                    table.assign_seat(name)
-                    break
-            else:
-                self.left_over.append(name)
+        if len(names) < 5 or len(names) >= tot_seats:
+            for name in names:
+                for table in self.tables:
+                    if table.has_free_spot():
+                        table.assign_seat(name)
+                        break
+                else:
+                    self.left_over.append(name)
+        else:
+            n_tavoli = (len(names) + self.tables[0].capacity - 1) // self.tables[
+                0
+            ].capacity
+            count = 0
+            for name in names:
+                index_table = count % n_tavoli
+                count = count + 1
+                for seat in self.tables[index_table].seats:
+                    if seat.free:
+                        seat.set_occupant(name)
+                        break
 
     def display(self):
         """
@@ -86,7 +95,7 @@ class Openspace:
         for table in self.tables:
             count = count + 1
             row = (count - 1) // table_per_row
-            line = (count) % table_per_row
+            line = (count + (table_per_row - 1)) % table_per_row
             x_base = line * 10
             y_base = row * -10
             tcount = 0
